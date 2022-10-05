@@ -53,13 +53,39 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void NextLevel()
+    // new method, used to spawn levels below each other
+    public void Iterate()
     {
-        if(levelInstances.Count == 0)
+        if (levelInstances.Count == 0)
         {
             return;
         }
-        if(levelIndex < levelInstances.Count - 1)
+        if (levelIndex < levelInstances.Count - 1)
+        {
+            levelIndex++;
+        }
+        else
+        {
+            levelIndex = 0;
+        }
+        currentLevel.isCurrent = false;
+        nextY += yOffset;
+        currentLevel.SetYPosition(nextY);
+        foreach (Image image in levelUI)
+        {
+            SetAlpha(image, 0.2f);
+        }
+        SetAlpha(levelUI[levelIndex], 1f);
+    }
+
+    // old method, used to spawn a new level
+    public void NextLevel()
+    {
+        if (levelInstances.Count == 0)
+        {
+            return;
+        }
+        if (levelIndex < levelInstances.Count - 1)
         {
             levelIndex++;
         }

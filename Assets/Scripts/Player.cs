@@ -8,23 +8,27 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("Checkpoint"))
         {
-            Transform checkpoint = other.transform.GetChild(0);
-            GameManager.instance.currentLevel.levelCheckpoint = checkpoint;
-            GameManager.instance.NextLevel();
-            GameManager.instance.currentLevel.isCurrent = false;
-            checkpoint.GetComponentInParent<Level>().isCurrent = true;
+            Transform spawnpoint = other.transform.GetChild(0);
+            GameManager.instance.currentLevel.checkpoint = spawnpoint;
+            var touchedLevel = spawnpoint.GetComponentInParent<Level>();
+            if (touchedLevel.isCurrent == false)
+            {
+                GameManager.instance.Iterate();
+                GameManager.instance.currentLevel = touchedLevel;
+                touchedLevel.isCurrent = true;
+            }
         }
         else if (other.CompareTag("Death"))
         {
             GameManager.instance.NextLevel();
-            Transform checkpoint = GameManager.instance.currentLevel.levelCheckpoint;
+            Transform checkpoint = GameManager.instance.currentLevel.checkpoint;
             transform.SetPositionAndRotation(checkpoint.position, checkpoint.rotation);
         }
         else if (other.CompareTag("Goal"))
         {
             GameManager.instance.RemoveLevel();
             GameManager.instance.NextLevel();
-            Transform checkpoint = GameManager.instance.currentLevel.levelCheckpoint;
+            Transform checkpoint = GameManager.instance.currentLevel.checkpoint;
             transform.SetPositionAndRotation(checkpoint.position, checkpoint.rotation);
         }
 

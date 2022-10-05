@@ -48,6 +48,12 @@ public class SphereMovement : MonoBehaviour
         OnValidate();
     }
 
+    private void Start()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     void Update()
     {
         playerInput.x = Input.GetAxis("Horizontal");
